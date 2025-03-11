@@ -6,7 +6,6 @@ import tqdm
 from prompts.utils import extract_strings_between_quotes, extract_after_article, extract_after_review, extract_after_paper, add_string_after_title, extract_after_colon, extract_after_abstract, extract_after_description
 from rank_bm25 import BM25Okapi
 import argparse
-from torch.nn.parallel import DistributedDataParallel as DDP
 
 parser = argparse.ArgumentParser()
 
@@ -25,13 +24,13 @@ def mean_pooling(token_embeddings, mask):
     return sentence_embeddings
 
 def retrieve_top_k_with_contriver(contriver, tokenizer, corpus, profile, query, k, batch_size = 16):
-    query_tokens = tokenizer([query], padding=True, truncation=True, return_tensors='pt').to('auto')
+    query_tokens = tokenizer([query], padding=True, truncation=True, return_tensors='pt').to('cuda')
     output_query = contriver(**query_tokens)
-    output_query = mean_pooling(output_query.last_hidden_state, query_tokens['attention_mask'])
+    output_query = mean_pooling(output_query.last_hidden_state, query_tokens['attention_mask']).to('cuda')
     scores = []
     batched_corpus = batchify(corpus, batch_size)
     for batch in batched_corpus:
-        tokens_batch = tokenizer(batch, padding=True, truncation=True, return_tensors='pt').to('auto')
+        tokens_batch = tokenizer(batch, padding=True, truncation=True, return_tensors='pt')
         outputs_batch = contriver(**tokens_batch)
         outputs_batch = mean_pooling(outputs_batch.last_hidden_state, tokens_batch['attention_mask'])
         temp_scores = output_query.squeeze() @ outputs_batch.T
@@ -66,6 +65,7 @@ def classification_review_query_corpus_maker(inp, profile, use_date):
     return corpus, query, ids
 
 def generation_news_query_corpus_maker(inp, profile, use_date):
+    print(profile)
     if use_date:
         corpus = [f'{x["title"]} {x["text"]} date: {x["date"]}' for x in profile]
     else:
@@ -142,7 +142,7 @@ if __name__ == "__main__":
         
         if ranker == "contriever":
             tokenizer = AutoTokenizer.from_pretrained(opts.contriever_checkpoint)
-            contriver = AutoModel.from_pretrained(opts.contriever_checkpoint).to('auto')
+            contriver = AutoModel.from_pretrained(opts.contriever_checkpoint).to('cuda')
             contriver.eval()
             randked_profile = retrieve_top_k_with_contriver(contriver, tokenizer, corpus, profile, query, len(profile), opts.batch_size)
         elif ranker == "bm25":
