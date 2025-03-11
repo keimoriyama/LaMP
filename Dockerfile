@@ -60,12 +60,12 @@ COPY --chmod=777 pyproject.toml uv.lock ./
 
 RUN uv sync
 
-RUN ls -la
+# RUN ls -la
 
-RUN uv add "jax[cuda12]"
+# RUN uv add "jax[cuda12]"
 
 ENV PATH="$PATH:/app/.venv/bin"
 
-RUN python -m nltk.downloader all
+# RUN python -m nltk.downloader all
 
 CMD ["/bin/bash"]
