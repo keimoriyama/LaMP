@@ -30,7 +30,7 @@ def retrieve_top_k_with_contriver(contriver, tokenizer, corpus, profile, query, 
     scores = []
     batched_corpus = batchify(corpus, batch_size)
     for batch in batched_corpus:
-        tokens_batch = tokenizer(batch, padding=True, truncation=True, return_tensors='pt')
+        tokens_batch = tokenizer(batch, padding=True, truncation=True, return_tensors='pt').to('cuda')
         outputs_batch = contriver(**tokens_batch)
         outputs_batch = mean_pooling(outputs_batch.last_hidden_state, tokens_batch['attention_mask'])
         temp_scores = output_query.squeeze() @ outputs_batch.T
@@ -65,7 +65,6 @@ def classification_review_query_corpus_maker(inp, profile, use_date):
     return corpus, query, ids
 
 def generation_news_query_corpus_maker(inp, profile, use_date):
-    print(profile)
     if use_date:
         corpus = [f'{x["title"]} {x["text"]} date: {x["date"]}' for x in profile]
     else:
