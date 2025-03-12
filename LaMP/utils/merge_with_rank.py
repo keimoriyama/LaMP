@@ -44,9 +44,8 @@ if __name__ == "__main__":
             rank[data['id']] = []
             for item in data['profile']:
                 rank[data['id']].append(item['id'])
-
     with open(res_addr, "w") as resfile:
-        res = merge(inp, out, rank)
+        res = merge(inp, out['golds'], rank)
         json.dump(res, resfile, indent=4)
 
 
