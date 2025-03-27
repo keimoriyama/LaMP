@@ -1,4 +1,4 @@
-DATA=train
+DATA=dev
 
 docker compose exec moriyama_task python \
 	LaMP/utils/merge_with_rank.py \
