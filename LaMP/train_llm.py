@@ -135,7 +135,8 @@ if __name__ == "__main__":
         generation_max_length = opts.generation_max_length,
         load_best_model_at_end = True,
         metric_for_best_model = best_metric,
-        greater_is_better = greater_is_better
+        greater_is_better = greater_is_better,
+        report_to='wandb'
     )
 
     trainer = Seq2SeqTrainer(
