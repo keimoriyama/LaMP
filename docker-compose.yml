@@ -2,7 +2,7 @@ volumes:
   venv:
 
 services:
-    moriyama_task:
+    lamp_reproduce:
         build:
             context: .
             dockerfile: Dockerfile
