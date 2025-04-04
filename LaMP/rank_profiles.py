@@ -6,6 +6,7 @@ import tqdm
 from prompts.utils import extract_strings_between_quotes, extract_after_article, extract_after_review, extract_after_paper, add_string_after_title, extract_after_colon, extract_after_abstract, extract_after_description
 from rank_bm25 import BM25Okapi
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser()
 
@@ -156,7 +157,8 @@ if __name__ == "__main__":
         data['profile'] = randked_profile
 
         rank_dict[data['id']] = [x['id'] for x in randked_profile]
-
-    
+    files = Path(opts.output_ranking_addr)
+    if not files.exists():
+        files.mkdir(parents=True, exist_ok=True) 
     with open(opts.output_ranking_addr, "w") as file:
         json.dump(rank_dict, file)

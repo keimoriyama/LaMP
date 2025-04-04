@@ -1,12 +1,12 @@
 TASK_NAME=LaMP-4
-DATA=dev
+DATA=train
 
 
 docker compose exec moriyama_task python \
 	LaMP/rank_profiles.py \
 	--input_data_addr ./LaMP/${TASK_NAME}/${DATA}_questions.json \
 	     --task ${TASK_NAME} \
-	     --output_ranking_addr ./LaMP/${TASK_NAME}/outputs/${DATA}_questions_rank.json \
+	     --output_ranking_addr ./LaMP/${TASK_NAME}/${DATA}_questions_rank.json \
 	     --ranker contriever
 
 
