@@ -106,6 +106,7 @@ if __name__ == "__main__":
         compute_metrics = create_metric_bleu_rouge_meteor(tokenizer = tokenizer)
         best_metric = "rouge-1"
     
+    # create_preprocessor
     train_dataset = convert_to_hf_dataset(train_dataset, cache_dir = opts.cache_dir).map(create_preprocessor(tokenizer = tokenizer, max_length = opts.max_length), batched=True)
     eval_dataset = convert_to_hf_dataset(eval_dataset, cache_dir = opts.cache_dir).map(create_preprocessor(tokenizer = tokenizer, max_length = opts.max_length), batched=True)
     if opts.test_data:
