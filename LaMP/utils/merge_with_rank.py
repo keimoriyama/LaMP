@@ -48,5 +48,3 @@ if __name__ == "__main__":
     with open(res_addr, "w") as resfile:
         res = merge(inp, out['golds'], rank)
         json.dump(res, resfile, indent=4)
-
-
