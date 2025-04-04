@@ -121,6 +121,11 @@ if __name__ == "__main__":
     
     rank_dict = dict()
 
+    
+    tokenizer = AutoTokenizer.from_pretrained(opts.contriever_checkpoint)
+    contriver = AutoModel.from_pretrained(opts.contriever_checkpoint).to('cuda')
+    contriver.eval()
+    # データを展開しているだけ
     for data in tqdm.tqdm(dataset):
         inp = data['input']
         profile = data['profile']
@@ -138,11 +143,9 @@ if __name__ == "__main__":
             corpus, query, ids = parphrase_tweet_query_corpus_maker(inp, profile, opts.use_date)
         elif task == "LaMP-6":
             corpus, query, ids = generation_avocado_query_corpus_maker(inp, profile, opts.use_date)
-        
+
+        # Top kのプロフィールを類似度判定から取得している
         if ranker == "contriever":
-            tokenizer = AutoTokenizer.from_pretrained(opts.contriever_checkpoint)
-            contriver = AutoModel.from_pretrained(opts.contriever_checkpoint).to('cuda')
-            contriver.eval()
             randked_profile = retrieve_top_k_with_contriver(contriver, tokenizer, corpus, profile, query, len(profile), opts.batch_size)
         elif ranker == "bm25":
             randked_profile = retrieve_top_k_with_bm25(corpus, profile, query, len(profile))
