@@ -52,15 +52,13 @@ RUN sh ./uv-installer.sh && rm ./uv-installer.sh
 
 USER appuser
 
-ENV PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
-
 WORKDIR ${APP_DIR}
 
 COPY --chmod=777 pyproject.toml uv.lock ./
 
 RUN uv sync
 
-ENV PATH="$PATH:/app/.venv/bin"
+ENV PATH="/app/.venv/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 
 RUN python -m nltk.downloader all
 
