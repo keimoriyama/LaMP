@@ -157,8 +157,5 @@ if __name__ == "__main__":
         data['profile'] = randked_profile
 
         rank_dict[data['id']] = [x['id'] for x in randked_profile]
-    files = Path(opts.output_ranking_addr)
-    if not files.exists():
-        files.mkdir(parents=True, exist_ok=True) 
     with open(opts.output_ranking_addr, "w") as file:
         json.dump(rank_dict, file)
