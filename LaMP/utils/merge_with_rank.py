@@ -1,6 +1,7 @@
 import json 
 import argparse
 
+# top-kのやつとoutputをmergeする
 def merge(inps, outs, ranks):
     for inp in inps:
         for o in outs:
