@@ -107,6 +107,7 @@ if __name__ == "__main__":
         best_metric = "rouge-1"
     
     # create_preprocessor
+    # input_idsからlabelsを予測するように学習をしている
     train_dataset = convert_to_hf_dataset(train_dataset, cache_dir = opts.cache_dir).map(create_preprocessor(tokenizer = tokenizer, max_length = opts.max_length), batched=True)
     eval_dataset = convert_to_hf_dataset(eval_dataset, cache_dir = opts.cache_dir).map(create_preprocessor(tokenizer = tokenizer, max_length = opts.max_length), batched=True)
     if opts.test_data:
@@ -139,7 +140,6 @@ if __name__ == "__main__":
         greater_is_better = greater_is_better,
         report_to='wandb'
     )
-
     trainer = Seq2SeqTrainer(
         model = model,
         args = training_args,
@@ -149,7 +149,9 @@ if __name__ == "__main__":
         tokenizer = tokenizer,
         compute_metrics = compute_metrics
     )
-
+    # 学習に使用する損失は、Cross Entropyになる
+    # 入力と出力はトークン列になる
+    # labelsとinputsがどこから取ってきているのか
     trainer.train()
 
     if opts.test_data:
