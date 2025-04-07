@@ -1,8 +1,8 @@
-TASK_NAME=LaMP-4
+TASK_NAME=LaMP-5
 DATA=train
 
 
-docker compose exec moriyama_task python \
+docker compose exec lamp_reproduce python \
 	LaMP/rank_profiles.py \
 	--input_data_addr ./LaMP/${TASK_NAME}/${DATA}_questions.json \
 	     --task ${TASK_NAME} \
@@ -10,7 +10,7 @@ docker compose exec moriyama_task python \
 	     --ranker contriever
 
 
-docker compose exec moriyama_task python \
+docker compose exec lamp_reproduce python \
 	LaMP/utils/merge_with_rank.py \
 	--lamp_questions_addr ./LaMP/${TASK_NAME}/${DATA}_questions.json \
 	--lamp_output_addr ./LaMP/${TASK_NAME}/${DATA}_outputs.json \
