@@ -7,4 +7,6 @@ docker compose exec lamp_reproduce python LaMP/train_llm.py \
     --task ${TASK_NAME} \
     --output_dir LaMP/results/ \
     --retriever contriver \
-    --num_retrieved 2
+    --num_retrieved 2 \
+    --use_profile
+
