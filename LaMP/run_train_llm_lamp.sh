@@ -6,7 +6,7 @@ docker compose exec lamp_reproduce python LaMP/train_llm.py \
     --model_name google/flan-t5-base \
     --task ${TASK_NAME} \
     --output_dir LaMP/results/ \
-    --retriever contriver \
+    --retriever contriever \
     --num_retrieved 2 \
     --use_profile
 

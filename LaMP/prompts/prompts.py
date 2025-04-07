@@ -194,6 +194,8 @@ def create_prompt_generator(num_retrieve, ret_type = "bm25", is_ranked = False, 
         contriever.eval()
 
     def prompt(inp, profile, task):
+        import ipdb;ipdb.set_trace()
+
         if task == "LaMP-1":
             corpus, query = classification_citation_query_corpus_maker(inp, profile)
         elif task == "LaMP-2-old":
