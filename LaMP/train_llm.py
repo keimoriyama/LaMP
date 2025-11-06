@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
     task = opts.task
     if opts.use_profile:
-        prompt_generator, contriver = create_prodb;ipmpt_generator(opts.num_retrieved, opts.retriever, opts.is_ranked, opts.max_length, tokenizer)
+        prompt_generator, contriver = create_prompt_generator(opts.num_retrieved, opts.retriever, opts.is_ranked, opts.max_length, tokenizer)
     else:
         prompt_generator, contriver = None, None
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     if contriver:
         contriver = contriver.to("cpu")
-
+    import ipdb;ipdb.set_trace()
     training_args = Seq2SeqTrainingArguments(
         output_dir = opts.output_dir,
         do_train = True,
